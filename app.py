@@ -1,18 +1,23 @@
-from flask import Flask, request, make_response, jsonify
-from src.pipelines.prediction_pipeline import CustomData, ClassifyPipeline  # Updated import
+from flask import Flask, request, render_template, jsonify
+from src.pipelines.classification_pipeline import CustomData, ClassifyPipeline  # Updated import
+import sys
 
 application = Flask(__name__)
 
+app = application
+
 @app.route('/')
 def home_page():
-    return "Welcome to the Thyroid Detection App"
+    return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict_datapoint():
-    data = request.form
+    if request.method == 'GET':
+        return render_template('form.html')
 
-    custom_data = CustomData(
-        age=float(request.form.get('age')),  # Include relevant form fields
+    else:
+        data = CustomData(
+            age=float(request.form.get('age')),  # Include relevant form fields
             sex=request.form.get('sex'),
             on_thyroxine=request.form.get('on_thyroxine'),
             query_on_thyroxine=request.form.get('query_on_thyroxine'),
@@ -34,17 +39,15 @@ def predict_datapoint():
             T4U_measured=request.form.get('T4U_measured'),
             FTI_measured=request.form.get('FTI_measured'),
             TBG_measured=request.form.get('TBG_measured'),
-            referral_source=request.form.get('referral_source')
-    )
+            referral_source=request.form.get('referral_source'),
+        )
+        final_new_data = data.get_data_as_dataframe()
+        classify_pipeline = ClassifyPipeline()
+        pred = classify_pipeline.classify(final_new_data)  # Use the classification pipeline
 
-    final_new_data = custom_data.get_data_as_dataframe()
-    classify_pipeline = ClassifyPipeline()
-    pred = classify_pipeline.classify(final_new_data)
+        results = pred[0]  # Assuming pred is an array of class predictions
 
-    results = pred[0]  # Assuming pred is an array of class predictions
-
-    response = make_response(f"Predicted Result: {results}")
-    return response
+        return render_template('form.html', final_result=results)  # Update template to display classification results
 
 if __name__ == "__main__":
-    application.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True)
