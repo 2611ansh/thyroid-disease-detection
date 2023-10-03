@@ -14,7 +14,6 @@ This project is aimed at developing a Thyroid Disease Detection system using mac
 - [Model Training](#model-training)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Getting Started
 
