@@ -12,7 +12,7 @@ class ClassifyPipeline:
     def classify(self, features):
         try:
             preprocessor_path = os.path.join('artifacts', 'preprocessor.pkl')
-            model_path = os.path.join('artifacts', 'classification_model.pkl')  # Assuming you have a classification model
+            model_path = os.path.join('artifacts', 'model.pkl')  # Assuming you have a classification model
 
             preprocessor = load_object(preprocessor_path)
             model = load_object(model_path)
