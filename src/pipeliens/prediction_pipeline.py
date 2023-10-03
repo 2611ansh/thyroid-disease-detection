@@ -27,7 +27,7 @@ class ClassifyPipeline:
             raise CustomException(e, sys)
 
 class CustomData:
-    def __init__(self,  # Include the columns relevant to your classification task
+    def __init__(self,
                  age,
                  sex,
                  on_thyroxine,
@@ -45,13 +45,18 @@ class CustomData:
                  hypopituitary,
                  psych,
                  TSH_measured,
+                 TSH,
                  T3_measured,
+                 T3,
                  TT4_measured,
+                 TT4,
                  T4U_measured,
+                 T4U,
                  FTI_measured,
+                 FTI,
                  TBG_measured,
+                 TBG,
                  referral_source):
-        
         self.age = age
         self.sex = sex
         self.on_thyroxine = on_thyroxine
@@ -69,11 +74,17 @@ class CustomData:
         self.hypopituitary = hypopituitary
         self.psych = psych
         self.TSH_measured = TSH_measured
+        self.TSH = TSH
         self.T3_measured = T3_measured
+        self.T3 = T3
         self.TT4_measured = TT4_measured
+        self.TT4 = TT4
         self.T4U_measured = T4U_measured
+        self.T4U = T4U
         self.FTI_measured = FTI_measured
+        self.FTI = FTI
         self.TBG_measured = TBG_measured
+        self.TBG = TBG
         self.referral_source = referral_source
 
     def get_data_as_dataframe(self):
@@ -96,13 +107,20 @@ class CustomData:
                 'hypopituitary': [self.hypopituitary],
                 'psych': [self.psych],
                 'TSH measured': [self.TSH_measured],
+                'TSH': [self.TSH],
                 'T3 measured': [self.T3_measured],
+                'T3': [self.T3],
                 'TT4 measured': [self.TT4_measured],
+                'TT4': [self.TT4],
                 'T4U measured': [self.T4U_measured],
+                'T4U': [self.T4U],
                 'FTI measured': [self.FTI_measured],
+                'FTI': [self.FTI],
                 'TBG measured': [self.TBG_measured],
+                'TBG': [self.TBG],
                 'referral source': [self.referral_source]
             }
+
             df = pd.DataFrame(custom_data_input_dict)
             logging.info('Dataframe Gathered')
             return df
